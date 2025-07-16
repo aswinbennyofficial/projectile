@@ -1,0 +1,9 @@
+version: v1
+
+routes:
+  - name: main_fanout
+    source: webhook-main
+    sinks:
+      - stdout-log
+      - file-logger
+      - notify-service

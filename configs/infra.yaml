@@ -1,0 +1,23 @@
+version: v1
+
+sources:
+  webhook-main:
+    type: webhook
+    path: /webhook/main
+    method: POST
+    schema: schemas/main.json
+
+sinks:
+  stdout-log:
+    type: stdout
+
+  file-logger:
+    type: file
+    path: ./logs/main/
+
+  notify-service:
+    type: webhook
+    method: POST
+    url: http://internal.service.local/notify
+    headers:
+      X-Auth-Token: abc123

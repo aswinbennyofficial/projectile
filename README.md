@@ -34,6 +34,8 @@ With a YAML-based config system and modular plugin support, Projectile is design
 ### `infra.yaml` – Secrets, DSNs, and Connection Setup
 
 ```yaml
+version: v1
+
 sources:
   gitlab-webhook:
     type: webhook
@@ -45,11 +47,11 @@ sinks:
   kafka-main:
     type: kafka
     dsn: kafka://broker:9092
-    topic: events
+    topic: gitlab-events
 
   slack-alerts:
     type: slack
-    dsn: https://hooks.slack.com/services/XXX/YYY/ZZZ
+    dsn: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXX
 
   file-logger:
     type: file
@@ -60,6 +62,8 @@ sinks:
 ### `routes.yaml` – Routing Logic (Dev-Safe)
 
 ```yaml
+version: v1
+
 routes:
   - name: gitlab_push_pipeline
     source: gitlab-webhook
