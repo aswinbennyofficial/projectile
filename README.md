@@ -9,22 +9,53 @@ With a YAML-based config system and modular plugin support, Projectile is design
 ![Architecture diagram](./_nocode/images/architecture-diagram.png)
 
 
-## 🎯 Key Features
+## 🔌 Supported Plugins
 
-- 🔁 **Source-to-Sink Routing** — One input, many outputs
-- 🧩 **Pluggable Architecture** — Easy to add new sources and sinks
-- 🛠️ **Optional Schema Validation & Transformation** — Hook in pre-processing logic
-- ⚙️ **DSN-Based Infra Setup** — Clean separation of secrets and logic
-- ⚡ **Hot-Reloadable Routes** — No restart required
-- 📦 **Docker-Ready & Lightweight** — Just run and go
+### Sources
+
+| Type     | Supported |
+|----------|-----------|
+| `webhook` | ✅        |
+| `kafka`   | ❌        |
+| `rabbitMQ`| ❌        |
+| `http`    | ❌        |
+| `timer`   | ❌        |
+
+### Sinks
+
+| Type       | Supported |
+|------------|-----------|
+| `stdout`   | ✅        |
+| `file`     | ✅        |
+| `webhook`  | ✅        |
+| `kafka`    | ❌        |
+| `postgres` | ❌        |
+| `slack`    | ❌        |
+| `s3`       | ❌        |
+| `rabbitMQ` | ❌        |
+
 
 
 ## 🧠 Use Cases
 
-- Forward webhook events to Kafka, Slack, or internal APIs
-- Mirror Kafka events into multiple systems
-- Trigger workflows or alerts from GitHub/GitLab events
-- Replace over-engineered pipelines with something lean
+- 🔄 Forward webhook events to Kafka, Slack, or internal APIs
+- 🔁 Mirror Kafka events into multiple systems
+- 🚀 Trigger workflows or alerts from GitHub/GitLab events
+- 🧪 Build pluggable event processing pipelines
+- 📝 Log events to file for audit or debugging
+
+
+
+## 🧩 Speciality
+
+- ✅ **Modular Plugin System**: Easily add new sources or sinks with simple Go interfaces
+- 🔁 **Dynamic Routing**: Define event flows declaratively via `routes.yaml`
+- 🧠 **Decoupled Design**: Clean separation of concerns between config, orchestration, and plugins
+- ⚙️ **Config-Driven**: All behavior driven by YAML config – no code change required for routing
+- 📦 **Pluggable Transforms**: (WIP) Plan support for filters and `gojq`-style transformations
+- 🧪 **Single Binary Runtime**: All functionality packed into a single Go binary – no external dependencies
+- 🔧 **Unified Runtime**: Run all plugins (sources/sinks) together in one self-contained process
+
 
 
 ---
@@ -42,7 +73,12 @@ sources:
     config:
       path: /webhook/main
       method: POST
-      schema: schemas/main.json
+
+  webhook-metrics:
+    type: webhook
+    config:
+      path: /webhook/metrics
+      method: POST
 
 sinks:
   stdout-log:
@@ -61,6 +97,7 @@ sinks:
       url: http://internal.service.local/notify
       headers:
         X-Auth-Token: abc123
+
 ```
 
 
@@ -70,20 +107,32 @@ sinks:
 version: v1
 
 routes:
-  - name: gitlab_push_pipeline
-    source: gitlab-webhook
+  - name: main_fanout
+    source: webhook-main
     sinks:
-      - kafka-main
-      - slack-alerts
+      - stdout-log
       - file-logger
+      - notify-service
+
+  - name: metrics_alert
+    source: webhook-metrics
+    sinks:
+      - stdout-log
+      - notify-service
 ```
 
 
 ---
 
-## 🧰 Ideal For
+## 🚀 How to Run
 
-- Backend developers building integrations
-- Internal dev tools and observability pipelines
-- Event-driven architectures that need simple routing
-- Teams that want flexibility without spinning up a full pub/sub system
+```bash
+go run cmd/projectile/main.go
+```
+
+Make sure you have the required configuration files:
+
+- `configs/infra.yaml`
+- `configs/routes.yaml`
+
+
