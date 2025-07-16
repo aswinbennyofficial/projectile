@@ -37,29 +37,34 @@ With a YAML-based config system and modular plugin support, Projectile is design
 version: v1
 
 sources:
-  gitlab-webhook:
+  webhook-main:
     type: webhook
-    path: /webhook/gitlab
-    method: POST
-    schema: schemas/gitlab.json
+    config:
+      path: /webhook/main
+      method: POST
+      schema: schemas/main.json
 
 sinks:
-  kafka-main:
-    type: kafka
-    dsn: kafka://broker:9092
-    topic: gitlab-events
-
-  slack-alerts:
-    type: slack
-    dsn: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXX
+  stdout-log:
+    type: stdout
+    config: {}
 
   file-logger:
     type: file
-    path: ./logs/gitlab/
+    config:
+      path: ./logs/main/
+
+  notify-service:
+    type: webhook
+    config:
+      method: POST
+      url: http://internal.service.local/notify
+      headers:
+        X-Auth-Token: abc123
 ```
 
 
-### `routes.yaml` – Routing Logic (Dev-Safe)
+### `routes.yaml` – Routing Logic
 
 ```yaml
 version: v1
