@@ -16,10 +16,10 @@ type Controller struct {
 	routes     []config.RouteEntry
 }
 
-func NewController() *Controller {
+func NewController(eventChanSize int) *Controller {
 	return &Controller{
 		registry:  plugins.NewRegistry(),
-		eventChan: make(chan config.Event, 100),
+		eventChan: make(chan config.Event, eventChanSize),
 	}
 }
 

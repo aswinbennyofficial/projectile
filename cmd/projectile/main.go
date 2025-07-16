@@ -10,6 +10,8 @@ import (
 
 func main() {
 	ctx := context.Background()
+	eventChanSize := 200
+
 
 	// Initialize logger
 	logger := utils.NewLogger()
@@ -25,7 +27,7 @@ func main() {
 		logger.Fatal().Err(err).Msg("failed to load routes config:")
 	}
 
-	ctrl := orchestrator.NewController()
+	ctrl := orchestrator.NewController(eventChanSize)
 	if err := ctrl.Initialize(infra, routes); err != nil {
 		logger.Fatal().Err(err).Msg("failed to initialize controller:")
 	}
