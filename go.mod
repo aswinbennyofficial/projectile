@@ -3,13 +3,14 @@ module github.com/aswinbennyofficial/projectile
 go 1.24.5
 
 require (
-	github.com/fsnotify/fsnotify v1.9.0
 	github.com/google/uuid v1.6.0
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/viper v1.20.1
 )
 
 require (
+	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect

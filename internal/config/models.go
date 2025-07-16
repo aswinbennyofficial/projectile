@@ -12,23 +12,20 @@ type RoutesConfig struct {
 }
 
 type SourceConfig struct {
-	Type    string            `mapstructure:"type"`
-	Path    string            `mapstructure:"path,omitempty"`
-	Method  string            `mapstructure:"method,omitempty"`
-	Schema  string            `mapstructure:"schema,omitempty"`
-	DSN     string            `mapstructure:"dsn,omitempty"`
-	Headers map[string]string `mapstructure:"headers,omitempty"`
+	Type   string                 `mapstructure:"type"`
+	Config map[string]interface{} `mapstructure:"config"` // plugin-specific config
 }
 
 type SinkConfig struct {
-	Type    string            `mapstructure:"type"`
-	Path    string            `mapstructure:"path,omitempty"`
-	Method  string            `mapstructure:"method,omitempty"`
-	URL     string            `mapstructure:"url,omitempty"`
-	DSN     string            `mapstructure:"dsn,omitempty"`
-	Topic   string            `mapstructure:"topic,omitempty"`
-	Headers map[string]string `mapstructure:"headers,omitempty"`
+	Type   string                 `mapstructure:"type"`
+	Config map[string]interface{} `mapstructure:"config"` // plugin-specific config
 }
+
+
+
+
+
+
 
 type RouteEntry struct {
 	Name   string   `mapstructure:"name"`

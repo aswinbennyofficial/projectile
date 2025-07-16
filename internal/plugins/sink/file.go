@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/aswinbennyofficial/projectile/internal/config"
-
+	"github.com/mitchellh/mapstructure"
 )
 
 
@@ -19,10 +19,23 @@ type FileSink struct {
 	path string
 }
 
+
+type FileSinkConfig struct {
+	Path string `mapstructure:"path"`
+}
+
+
 func NewFileSink(name string, cfg config.SinkConfig) *FileSink {
+	var fc FileSinkConfig
+	// @TODO : return err
+	if err := mapstructure.Decode(cfg.Config, &fc); err != nil {
+		return nil
+	}
+
+
 	return &FileSink{
 		name: name,
-		path: cfg.Path,
+		path: fc.Path,
 	}
 }
 

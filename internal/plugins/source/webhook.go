@@ -10,6 +10,7 @@ import (
 
 	"github.com/aswinbennyofficial/projectile/internal/config"
 	"github.com/google/uuid"
+	"github.com/mitchellh/mapstructure"
 )
 
 
@@ -20,11 +21,23 @@ type WebhookSource struct {
 	server *http.Server
 }
 
+
+type WebhookSourceConfig struct {
+	Path   string `mapstructure:"path"`
+	Method string `mapstructure:"method"`
+	Schema string `mapstructure:"schema,omitempty"`
+}
+
 func NewWebhookSource(name string, cfg config.SourceConfig) *WebhookSource {
+	var sc WebhookSourceConfig
+	if err := mapstructure.Decode(cfg.Config, &sc); err != nil {
+		return nil
+	}
+	
 	return &WebhookSource{
 		name:   name,
-		path:   cfg.Path,
-		method: strings.ToUpper(cfg.Method),
+		path:   sc.Path,
+		method: strings.ToUpper(sc.Method),
 	}
 }
 

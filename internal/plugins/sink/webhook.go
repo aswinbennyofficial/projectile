@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/aswinbennyofficial/projectile/internal/config"
+	"github.com/mitchellh/mapstructure"
 )
 
 
@@ -22,12 +23,24 @@ type WebhookSink struct {
 	client  *http.Client
 }
 
+
+type WebhookSinkConfig struct {
+	URL     string            `mapstructure:"url"`
+	Method  string            `mapstructure:"method"`
+	Headers map[string]string `mapstructure:"headers"`
+}
+
 func NewWebhookSink(name string, cfg config.SinkConfig) *WebhookSink {
+	var wc WebhookSinkConfig
+	if err := mapstructure.Decode(cfg.Config, &wc); err != nil {
+		return nil
+	}
+
 	return &WebhookSink{
 		name:    name,
-		url:     cfg.URL,
-		method:  cfg.Method,
-		headers: cfg.Headers,
+		url:     wc.URL,
+		method:  wc.Method,
+		headers: wc.Headers,
 		client: &http.Client{
 			Timeout: 30 * time.Second,
 		},
