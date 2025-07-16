@@ -28,17 +28,17 @@ type WebhookSourceConfig struct {
 	Schema string `mapstructure:"schema,omitempty"`
 }
 
-func NewWebhookSource(name string, cfg config.SourceConfig) *WebhookSource {
+func NewWebhookSource(name string, cfg config.SourceConfig) (*WebhookSource, error) {
 	var sc WebhookSourceConfig
 	if err := mapstructure.Decode(cfg.Config, &sc); err != nil {
-		return nil
+		return nil,err
 	}
 	
 	return &WebhookSource{
 		name:   name,
 		path:   sc.Path,
 		method: strings.ToUpper(sc.Method),
-	}
+	},nil
 }
 
 func (w *WebhookSource) Start(ctx context.Context, eventChan chan<- config.Event) error {

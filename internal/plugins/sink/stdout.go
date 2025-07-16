@@ -14,8 +14,8 @@ type StdoutSink struct {
 	name string
 }
 
-func NewStdoutSink(name string, cfg config.SinkConfig) *StdoutSink {
-	return &StdoutSink{name: name}
+func NewStdoutSink(name string, cfg config.SinkConfig) (*StdoutSink,error) {
+	return &StdoutSink{name: name},nil
 }
 
 func (s *StdoutSink) Send(ctx context.Context, event config.Event) error {

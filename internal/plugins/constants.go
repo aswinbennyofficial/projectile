@@ -11,13 +11,13 @@ import (
 // SinkFactories maps sink type → constructor
 var SinkFactories = map[string]func(name string, cfg config.SinkConfig) (sink.Sink, error){
 	"stdout": func(name string, cfg config.SinkConfig) (sink.Sink, error) {
-		return sink.NewStdoutSink(name, cfg), nil
+		return sink.NewStdoutSink(name, cfg)
 	},
 	"file": func(name string, cfg config.SinkConfig) (sink.Sink, error) {
-		return sink.NewFileSink(name, cfg), nil
+		return sink.NewFileSink(name, cfg)
 	},
 	"webhook": func(name string, cfg config.SinkConfig) (sink.Sink, error) {
-		return sink.NewWebhookSink(name, cfg), nil
+		return sink.NewWebhookSink(name, cfg)
 	},
 }
 
@@ -26,6 +26,6 @@ var SinkFactories = map[string]func(name string, cfg config.SinkConfig) (sink.Si
 // SourceFactories maps source type → constructor
 var SourceFactories = map[string]func(name string, cfg config.SourceConfig) (source.Source, error){
 	"webhook": func(name string, cfg config.SourceConfig) (source.Source, error) {
-		return source.NewWebhookSource(name, cfg), nil
+		return source.NewWebhookSource(name, cfg)
 	},
 }

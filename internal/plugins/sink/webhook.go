@@ -30,10 +30,10 @@ type WebhookSinkConfig struct {
 	Headers map[string]string `mapstructure:"headers"`
 }
 
-func NewWebhookSink(name string, cfg config.SinkConfig) *WebhookSink {
+func NewWebhookSink(name string, cfg config.SinkConfig) (*WebhookSink, error) {
 	var wc WebhookSinkConfig
 	if err := mapstructure.Decode(cfg.Config, &wc); err != nil {
-		return nil
+		return nil,err
 	}
 
 	return &WebhookSink{
@@ -44,7 +44,7 @@ func NewWebhookSink(name string, cfg config.SinkConfig) *WebhookSink {
 		client: &http.Client{
 			Timeout: 30 * time.Second,
 		},
-	}
+	},nil
 }
 
 func (w *WebhookSink) Send(ctx context.Context, event config.Event) error {

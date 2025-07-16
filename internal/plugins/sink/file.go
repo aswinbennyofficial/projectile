@@ -25,18 +25,18 @@ type FileSinkConfig struct {
 }
 
 
-func NewFileSink(name string, cfg config.SinkConfig) *FileSink {
+func NewFileSink(name string, cfg config.SinkConfig) (*FileSink,error) {
 	var fc FileSinkConfig
 	// @TODO : return err
 	if err := mapstructure.Decode(cfg.Config, &fc); err != nil {
-		return nil
+		return nil, err
 	}
 
 
 	return &FileSink{
 		name: name,
 		path: fc.Path,
-	}
+	},nil
 }
 
 func (f *FileSink) Send(ctx context.Context, event config.Event) error {
