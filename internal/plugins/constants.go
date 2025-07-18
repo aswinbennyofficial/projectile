@@ -38,4 +38,7 @@ var SourceFactories = map[string]func(name string, cfg config.SourceConfig) (sou
 	"webhook": func(name string, cfg config.SourceConfig) (source.Source, error) {
 		return source.NewWebhookSource(name, cfg)
 	},
+	"http-poller":func(name string, cfg config.SourceConfig) (source.Source, error) {
+		return source.NewHttpPollSource(name, cfg)
+	},
 }

@@ -7,3 +7,9 @@ routes:
       - stdout-log
       - file-logger
       - notify-service
+
+  - name: scrapper_fanout
+    source: scrapper
+    sinks:
+      - stdout-log
+      - file-logger 

@@ -8,6 +8,18 @@ sources:
       method: POST
       schema: schemas/main.json
 
+  scrapper:
+    type: http-poller 
+    config:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+      headers:
+        Accept: application/json
+      body: ""
+      interval: 10s
+
+
+
 sinks:
   stdout-log:
     type: stdout
@@ -19,7 +31,7 @@ sinks:
       path: ./logs/main/
 
   notify-service:
-    type: webhook
+    type: http
     config:
       method: POST
       url: http://internal.service.local/notify

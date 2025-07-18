@@ -27,7 +27,7 @@ With a YAML-based config system and modular plugin support, Projectile is design
 |------------|-----------|
 | `stdout`   | ✅        |
 | `file`     | ✅        |
-| `webhook`  | ✅        |
+| `http`  | ✅        |
 | `kafka`    | ❌        |
 | `postgres` | ❌        |
 | `slack`    | ❌        |
@@ -91,7 +91,7 @@ sinks:
       path: ./logs/main/
 
   notify-service:
-    type: webhook
+    type: http
     config:
       method: POST
       url: http://internal.service.local/notify
