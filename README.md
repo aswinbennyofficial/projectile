@@ -74,16 +74,10 @@ sources:
       path: /webhook/main
       method: POST
 
-  webhook-metrics:
-    type: webhook
-    config:
-      path: /webhook/metrics
-      method: POST
-
-  scrapper:
+  scraper:
     type: http-poller 
     config:
-      url: https://jsonplaceholder.typicode.com/posts/1
+      url: https://api.endpoint/
       method: GET
       headers:
         Accept: application/json
@@ -105,9 +99,10 @@ sinks:
     type: http
     config:
       method: POST
-      url: http://internal.service.local/notify
+      url: https://webhook-of-someservice/
       headers:
         X-Auth-Token: abc123
+
 
 ```
 
@@ -125,11 +120,22 @@ routes:
       - file-logger
       - notify-service
 
-  - name: metrics_alert
-    source: webhook-metrics
-    sinks:
-      - stdout-log
-      - notify-service
+  - name: scraper_eval
+    source: scraper
+    rules:
+      - condition: event.status == "warning" && event.usage > 80
+        sinks:
+          - notify-service
+
+      - condition: event.warning == "ok"
+        sinks:
+          - stdout-log
+
+      - condition: # fall back
+        sinks:
+          - file-logger
+          - stdout-log
+
 ```
 
 

@@ -3,6 +3,7 @@ module github.com/aswinbennyofficial/projectile
 go 1.24.5
 
 require (
+	github.com/expr-lang/expr v1.17.5
 	github.com/google/uuid v1.6.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/zerolog v1.34.0
