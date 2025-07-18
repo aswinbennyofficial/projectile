@@ -15,7 +15,7 @@ import (
 
 
 
-type WebhookSink struct {
+type HttpSink struct {
 	name    string
 	url     string
 	method  string
@@ -24,19 +24,19 @@ type WebhookSink struct {
 }
 
 
-type WebhookSinkConfig struct {
+type HttpSinkConfig struct {
 	URL     string            `mapstructure:"url"`
 	Method  string            `mapstructure:"method"`
 	Headers map[string]string `mapstructure:"headers"`
 }
 
-func NewWebhookSink(name string, cfg config.SinkConfig) (*WebhookSink, error) {
-	var wc WebhookSinkConfig
+func NewHttpSink(name string, cfg config.SinkConfig) (*HttpSink, error) {
+	var wc HttpSinkConfig
 	if err := mapstructure.Decode(cfg.Config, &wc); err != nil {
 		return nil,err
 	}
 
-	return &WebhookSink{
+	return &HttpSink{
 		name:    name,
 		url:     wc.URL,
 		method:  wc.Method,
@@ -47,7 +47,7 @@ func NewWebhookSink(name string, cfg config.SinkConfig) (*WebhookSink, error) {
 	},nil
 }
 
-func (w *WebhookSink) Send(ctx context.Context, event config.Event) error {
+func (w *HttpSink) Send(ctx context.Context, event config.Event) error {
 	// Marshal event to JSON
 	data, err := json.Marshal(event)
 	if err != nil {
@@ -75,12 +75,12 @@ func (w *WebhookSink) Send(ctx context.Context, event config.Event) error {
 
 	// Check response status
 	if resp.StatusCode >= 400 {
-		return fmt.Errorf("webhook returned status %d", resp.StatusCode)
+		return fmt.Errorf("http request returned status %d", resp.StatusCode)
 	}
 
 	return nil
 }
 
-func (w *WebhookSink) GetName() string {
+func (w *HttpSink) GetName() string {
 	return w.name
 }

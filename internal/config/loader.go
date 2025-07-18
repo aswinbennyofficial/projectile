@@ -6,7 +6,7 @@ import (
 )
 
 
-// LoadInfraConfig loads and returns the infrastructure config (one-time)
+// LoadInfraConfig loads and returns the infrastructure config which defines sources and sinks
 func LoadInfraConfig(path string) (*InfraConfig, error) {
 	v := viper.New()
 	v.SetConfigFile(path)
@@ -29,7 +29,7 @@ func LoadInfraConfig(path string) (*InfraConfig, error) {
 	return &cfg, nil
 }
 
-// LoadRoutesConfig loads and returns the routing config (one-time)
+// LoadRoutesConfig loads and returns the routing config which maps the routes with their sources
 func LoadRoutesConfig(path string) (*RoutesConfig, error) {
 	v := viper.New()
 	v.SetConfigFile(path)

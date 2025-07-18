@@ -1,32 +1,32 @@
 package config
 
+// InfraConfig defines the global infrastructure configuration.
 type InfraConfig struct {
 	Version string                    `mapstructure:"version"`
 	Sources map[string]SourceConfig  `mapstructure:"sources"`
 	Sinks   map[string]SinkConfig    `mapstructure:"sinks"`
 }
 
+// RoutesConfig defines routing rules for events.
 type RoutesConfig struct {
 	Version string       `mapstructure:"version"`
 	Routes  []RouteEntry `mapstructure:"routes"`
 }
 
+// SourceConfig represents the configuration for a single source plugin.
 type SourceConfig struct {
 	Type   string                 `mapstructure:"type"`
 	Config map[string]interface{} `mapstructure:"config"` // plugin-specific config
 }
 
+// SinkConfig represents the configuration for a single sink plugin.
 type SinkConfig struct {
 	Type   string                 `mapstructure:"type"`
 	Config map[string]interface{} `mapstructure:"config"` // plugin-specific config
 }
 
 
-
-
-
-
-
+// RouteEntry defines how to connect one source to multiple sinks.
 type RouteEntry struct {
 	Name   string   `mapstructure:"name"`
 	Source string   `mapstructure:"source"`

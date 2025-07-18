@@ -3,12 +3,13 @@ package orchestrator
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/aswinbennyofficial/projectile/internal/config"
 	"github.com/aswinbennyofficial/projectile/internal/plugins"
 )
 
+
+// Controller orchestrates the flow of events from sources to sinks.
 type Controller struct {
 	registry   *plugins.Registry
 	
@@ -16,6 +17,7 @@ type Controller struct {
 	routes     []config.RouteEntry
 }
 
+// NewController creates and returns a new Controller instance with a buffered event channel.
 func NewController(eventChanSize int) *Controller {
 	return &Controller{
 		registry:  plugins.NewRegistry(),
@@ -23,12 +25,13 @@ func NewController(eventChanSize int) *Controller {
 	}
 }
 
+// Initialize sets up sources and sinks using provided infrastructure config.
 func (c *Controller) Initialize(infraConfig *config.InfraConfig, routesConfig *config.RoutesConfig) error {
+	
 	// Initialize sources and sinks
 	if err := c.registry.InitializeSources(infraConfig.Sources); err != nil {
 		return fmt.Errorf("failed to initialize sources: %w", err)
 	}
-
 	if err := c.registry.InitializeSinks(infraConfig.Sinks); err != nil {
 		return fmt.Errorf("failed to initialize sinks: %w", err)
 	}
@@ -37,6 +40,8 @@ func (c *Controller) Initialize(infraConfig *config.InfraConfig, routesConfig *c
 	return nil
 }
 
+
+// Start runs all source plugins and begins processing events.
 func (c *Controller) Start(ctx context.Context) error {
 	// Start all sources
 	for _, source := range c.registry.GetAllSources() {
@@ -51,29 +56,5 @@ func (c *Controller) Start(ctx context.Context) error {
 	return nil
 }
 
-func (c *Controller) processEvents(ctx context.Context) {
-	for {
-		select {
-		case event := <-c.eventChan:
-			c.routeEvent(ctx, event)
-		case <-ctx.Done():
-			return
-		}
-	}
-}
 
-func (c *Controller) routeEvent(ctx context.Context, event config.Event) {
-	// Find routes for this event's source
-	for _, route := range c.routes {
-		if route.Source == event.Source {
-			// Send to all sinks in this route
-			for _, sinkName := range route.Sinks {
-				if sink, exists := c.registry.GetSink(sinkName); exists {
-					if err := sink.Send(ctx, event); err != nil {
-						log.Printf("Failed to send event to sink %s: %v", sinkName, err)
-					}
-				}
-			}
-		}
-	}
-}
+

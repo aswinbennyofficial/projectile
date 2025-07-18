@@ -27,7 +27,6 @@ type FileSinkConfig struct {
 
 func NewFileSink(name string, cfg config.SinkConfig) (*FileSink,error) {
 	var fc FileSinkConfig
-	// @TODO : return err
 	if err := mapstructure.Decode(cfg.Config, &fc); err != nil {
 		return nil, err
 	}
