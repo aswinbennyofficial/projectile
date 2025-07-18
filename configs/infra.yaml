@@ -6,7 +6,6 @@ sources:
     config:
       path: /webhook/main
       method: POST
-      schema: schemas/main.json
 
   scrapper:
     type: http-poller 
@@ -29,6 +28,7 @@ sinks:
     type: file
     config:
       path: ./logs/main/
+      append: true
 
   notify-service:
     type: http

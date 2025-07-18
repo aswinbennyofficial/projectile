@@ -18,7 +18,7 @@ With a YAML-based config system and modular plugin support, Projectile is design
 | `webhook` | ✅        |
 | `kafka`   | ❌        |
 | `rabbitMQ`| ❌        |
-| `http`    | ❌        |
+| `http-poller`| ✅        |
 | `timer`   | ❌        |
 
 ### Sinks
@@ -80,6 +80,16 @@ sources:
       path: /webhook/metrics
       method: POST
 
+  scrapper:
+    type: http-poller 
+    config:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+      headers:
+        Accept: application/json
+      body: ""
+      interval: 10s
+
 sinks:
   stdout-log:
     type: stdout
@@ -89,6 +99,7 @@ sinks:
     type: file
     config:
       path: ./logs/main/
+      append: true
 
   notify-service:
     type: http
