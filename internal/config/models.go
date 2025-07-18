@@ -30,8 +30,15 @@ type SinkConfig struct {
 type RouteEntry struct {
 	Name   string   `mapstructure:"name"`
 	Source string   `mapstructure:"source"`
-	Sinks  []string `mapstructure:"sinks"`
+	Rules  []Rule `mapstructure:"rules"`
 }
+
+type Rule struct {
+	Condition string `mapstructure:"condition"`
+	Sinks     []string `mapstructure:"sinks"`
+}
+
+
 
 
 // Event represents data flowing through the system

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"log"
+
 	"net/http"
 	"strings"
 	"time"
@@ -13,6 +13,7 @@ import (
 	"github.com/aswinbennyofficial/projectile/internal/config"
 	"github.com/google/uuid"
 	"github.com/mitchellh/mapstructure"
+	"github.com/rs/zerolog/log"
 )
 
 type HttpPollSource struct {
@@ -105,6 +106,8 @@ func (h *HttpPollSource) Start(ctx context.Context, eventChan chan<- config.Even
 					Data:    data,
 					Headers: map[string]string{"StatusCode": resp.Status},
 				}
+
+				
 
 				select {
 				case eventChan <- event:

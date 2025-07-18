@@ -8,8 +8,17 @@ routes:
       - file-logger
       - notify-service
 
-  - name: scrapper_fanout
-    source: scrapper
-    sinks:
-      - stdout-log
-      - file-logger 
+  - name: scraper_eval
+    source: scraper
+    rules:
+      - condition: event.status == "warning" && event.usage > 80
+        sinks:
+          - notify-service
+
+      - condition: event.warning == "ok"
+        sinks:
+          - stdout-log
+
+      - condition: # all other cases
+        sinks:
+          - file-logger

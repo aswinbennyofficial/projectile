@@ -7,10 +7,10 @@ sources:
       path: /webhook/main
       method: POST
 
-  scrapper:
+  scraper:
     type: http-poller 
     config:
-      url: https://jsonplaceholder.typicode.com/posts/1
+      url: https://7f5211bc3c2643b38f3388294423d7c9.api.mockbin.io/
       method: GET
       headers:
         Accept: application/json
@@ -34,6 +34,6 @@ sinks:
     type: http
     config:
       method: POST
-      url: http://internal.service.local/notify
+      url: https://1fe38de2b6b840d297c5e95d515a56e6.api.mockbin.io/
       headers:
         X-Auth-Token: abc123
